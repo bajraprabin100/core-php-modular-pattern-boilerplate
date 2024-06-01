@@ -1,0 +1,15 @@
+{
+    "name": "your-vendor-name/core-php-modular-pattern-boilerplate",
+    "description": "Core php Modular Pattern Boilerplate.",
+    "require": {
+        "php": "^8.2",
+        "google/apiclient": "^2.16"
+    },
+    "authors": [
+        {
+            "name": "Prabin Bajracharya",
+            "email": "bajraprabin101@gmail.com",
+            "role": "Developer"
+        }
+    ]
+}
