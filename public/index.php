@@ -10,6 +10,7 @@ $router->get('/event/create', 'event@EventController@create');
 $router->get('/events/calender','event@EventController@calenderEvents');
 $router->post('/event', 'event@EventController@store');
 $router->delete('/events/{id}', 'event@EventController@delete');
+$router->get('/disconnect','event@EventController@disconnect');
 
 
 $router->post('/event/store', 'event@EventController@store');
