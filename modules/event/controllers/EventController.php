@@ -5,17 +5,18 @@ require_once '../modules/event/models/EventModel.php';
 require_once '../vendor/autoload.php';
 require_once '../core/GoogleClient.php';
 require_once '../modules/event/validation/CreateEventValidation.php';
+require_once '../modules/google-calender/services/interfaces/IGoogleCalenderService.php';
 
 class EventController extends Controller
 {
+    private $googleCalenderService;
+    public function __construct(IGoogleCalenderService $googleCalenderService){
+        $this->googleCalenderService = $googleCalenderService;
+    }
     
     public function index()
     {
-        $client = GoogleClient::getClient();
-        $service = new Google_Service_Calendar($client);
-
-        $calendarId = 'primary';
-        $events = $service->events->listEvents($calendarId);
+        $events = $this->googleCalenderService->listEvents();
         $this->view('event', 'index', ['events' => $events]);
     }
     public function create()
@@ -30,48 +31,21 @@ class EventController extends Controller
             header('Location: /event/create');
             exit;
         }
-        $client = GoogleClient::getClient();
-        $service = new Google_Service_Calendar($client);
-        $event = new Google_Service_Calendar_Event([
-            'summary' => $request->post['summary'],
-            'start' => [
-                'dateTime' => $request->post['startDateTime'],
-                'timeZone' => getTimezoneName($request->post['startDateTime']),    
-            ],
-            'end' => [
-                'dateTime' => $request->post['endDateTime'],
-                'timeZone' => getTimezoneName($request->post['endDateTime']),
-            ],
-        ]);
-
-        $calendarId = 'primary';
-        $event = $service->events->insert($calendarId, $event);
+        
+        $event = $this->googleCalenderService->insertEvent($request->post);
         printf("Event created: %s\n", $event->htmlLink);
         header('Location: /');
 
     }
     public function calenderEvents()
     {
-        $client = GoogleClient::getClient();
-        $service = new Google_Service_Calendar($client);
-
-        $calendarId = 'primary'; 
-        $optParams = array(
-            'maxResults' => 10,
-            'orderBy' => 'startTime',
-            'singleEvents' => true,
-            'timeMin' => date('c'),
-        );
-
-        $results = $service->events->listEvents($calendarId, $optParams);
-        $events = $results->getItems();
-
+        $events = $this->googleCalenderService->getCalenderEvents();
         $calendarEvents = [];
 
         if (!empty($events)) {
             foreach ($events as $event) {
-                $start = $this->convertDateTimeFormat($event->start->dateTime) ?: $event->start->date;
-                $end = $this->convertDateTimeFormat($event->end->dateTime) ?: $event->end->date;
+                $start = convertDateTimeFormat($event->start->dateTime) ?: $event->start->date;
+                $end = convertDateTimeFormat($event->end->dateTime) ?: $event->end->date;
                 
                 $calendarEvents[] = [
                     'id' => $event->id,
@@ -87,17 +61,10 @@ class EventController extends Controller
     }
     public function delete(HttpRequest $request,$eventId)
     {
-        $client = GoogleClient::getClient();
-        $service = new Google_Service_Calendar($client);
-        $calendarId = 'primary';
-        $service->events->delete($calendarId, $eventId);
+        $this->googleCalenderService->deleteEvents($eventId);
         echo "Event deleted.";
     }
-    private function convertDateTimeFormat($datetime)
-    {
-        $dateTime = new DateTime($datetime);
-        return $dateTime->format('Y-m-d\TH:i:s');
-    }
+    
     public function disconnect(){
         GoogleClient::disconnect();    
         header('Location: /');

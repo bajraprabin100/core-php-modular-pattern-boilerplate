@@ -4,7 +4,7 @@ require_once '../vendor/autoload.php';
 
 class GoogleClient
 {
-    public static function getClient()
+    public function getClient()
     {
         $config = require '../config/config.php';
 
