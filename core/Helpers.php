@@ -28,3 +28,13 @@ if (!function_exists('dd')) {
         echo $timezoneName;
     }
 }
+    if (!function_exists('convertDateTimeFormat')) {
+    
+        function convertDateTimeFormat($dateTime)
+        {
+            $dateTime = new DateTime($dateTime);
+            return $dateTime->format('Y-m-d\TH:i:s');
+        }
+        
+    
+}
