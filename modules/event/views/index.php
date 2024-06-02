@@ -8,6 +8,8 @@ include 'layouts/header.php';
         <h1>Upcoming Events</h1>
         <ul>
             <li><a href="/event/create">Create Event</a></li>
+            <li><a href="/disconnect">Disconnect</a></li>
+
         </ul>
         <div id="calendar"></div>
     </div>

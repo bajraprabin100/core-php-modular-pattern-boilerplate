@@ -98,5 +98,9 @@ class EventController extends Controller
         $dateTime = new DateTime($datetime);
         return $dateTime->format('Y-m-d\TH:i:s');
     }
+    public function disconnect(){
+        GoogleClient::disconnect();    
+        header('Location: /');
+    }
 }
 ?>

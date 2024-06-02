@@ -20,9 +20,12 @@ include 'layouts/header.php';
                     </div>
                     <div class="form-group">
                         <label for="endDateTimeDisplay">End Date and Time:</label>
-                        <input type="text" class="form-control datetimepicker-input" id="endDateTimeDisplay" required>
+                        <input type="text" class="form-control datetimepicker-input" id="endDateTimeDisplay" name="endDateTimeDisplay"
+                            placeholder="Enter Date and time" required>
                         <input type="hidden" id="endDateTime" name="endDateTime">
+
                     </div>
+                   
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
