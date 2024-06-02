@@ -13,7 +13,6 @@ $router->get('/events/calender','event@EventController@calenderEvents');
 $router->post('/event', 'event@EventController@store');
 $router->delete('/events/{id}', 'event@EventController@delete');
 $router->get('/disconnect','event@EventController@disconnect');
-
 $router->post('/event/store', 'event@EventController@store');
 
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
