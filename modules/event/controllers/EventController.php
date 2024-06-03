@@ -69,13 +69,5 @@ class EventController extends Controller
         GoogleClient::disconnect();    
         header('Location: /');
     }
-    public function disconnect(){
-        GoogleClient::disconnect();    
-        header('Location: /');
-    }
-    public function disconnect(){
-        GoogleClient::disconnect();    
-        header('Location: /');
-    }
+  
 }
-?>
